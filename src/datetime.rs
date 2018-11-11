@@ -6,6 +6,7 @@
 use std::{str, fmt, hash};
 use std::cmp::Ordering;
 use std::ops::{Add, Sub};
+#[cfg(feature="clock")]
 use std::time::{SystemTime, UNIX_EPOCH};
 use oldtime::Duration as OldDuration;
 
@@ -576,6 +577,7 @@ impl str::FromStr for DateTime<Local> {
     }
 }
 
+#[cfg(feature="clock")]
 impl From<SystemTime> for DateTime<Utc> {
     fn from(t: SystemTime) -> DateTime<Utc> {
         let (sec, nsec) = match t.duration_since(UNIX_EPOCH) {
@@ -601,6 +603,7 @@ impl From<SystemTime> for DateTime<Local> {
     }
 }
 
+#[cfg(feature="clock")]
 impl<Tz: TimeZone> From<DateTime<Tz>> for SystemTime {
     fn from(dt: DateTime<Tz>) -> SystemTime {
         use std::time::Duration;
@@ -1412,6 +1415,7 @@ mod tests {
     use offset::Local;
     use offset::{TimeZone, Utc, FixedOffset};
     use oldtime::Duration;
+    #[cfg(feature="clock")]
     use std::time::{SystemTime, UNIX_EPOCH};
 
     #[test]
@@ -1618,6 +1622,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature="clock")]
     fn test_from_system_time() {
         use std::time::Duration;
 
@@ -1638,9 +1643,7 @@ mod tests {
                    UNIX_EPOCH - Duration::new(999_999_999, 999_999_999));
 
         // DateTime<any tz> -> SystemTime (via `with_timezone`)
-        #[cfg(feature="clock")] {
-            assert_eq!(SystemTime::from(epoch.with_timezone(&Local)), UNIX_EPOCH);
-        }
+        assert_eq!(SystemTime::from(epoch.with_timezone(&Local)), UNIX_EPOCH);
         assert_eq!(SystemTime::from(epoch.with_timezone(&FixedOffset::east(32400))), UNIX_EPOCH);
         assert_eq!(SystemTime::from(epoch.with_timezone(&FixedOffset::west(28800))), UNIX_EPOCH);
     }
