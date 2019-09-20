@@ -10,10 +10,9 @@
 
 //! Temporal quantification
 
-use std::{fmt, i64};
-use std::error::Error;
-use std::ops::{Add, Sub, Mul, Div, Neg};
-use std::time::Duration as StdDuration;
+use core::{fmt, i64};
+use core::ops::{Add, Sub, Mul, Div, Neg};
+use core::time::Duration as StdDuration;
 
 /// The number of nanoseconds in a microsecond.
 const NANOS_PER_MICRO: i32 = 1000;
@@ -392,15 +391,22 @@ impl fmt::Display for Duration {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct OutOfRangeError(());
 
+impl OutOfRangeError {
+    fn description(&self) -> &str {
+        "Source duration value is out of range for the target type"
+    }
+}
+
 impl fmt::Display for OutOfRangeError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.description())
     }
 }
 
-impl Error for OutOfRangeError {
+#[cfg(feature = "std")]
+impl std::error::Error for OutOfRangeError {
     fn description(&self) -> &str {
-        "Source duration value is out of range for the target type"
+        OutOfRangeError::description(self)
     }
 }
 
@@ -436,8 +442,10 @@ fn div_rem_64(this: i64, other: i64) -> (i64, i64) {
 #[cfg(test)]
 mod tests {
     use super::{Duration, MIN, MAX, OutOfRangeError};
-    use std::{i32, i64};
-    use std::time::Duration as StdDuration;
+    use alloc::format;
+    use alloc::string::ToString;
+    use core::{i32, i64};
+    use core::time::Duration as StdDuration;
 
     #[test]
     fn test_duration() {

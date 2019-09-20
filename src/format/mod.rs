@@ -17,9 +17,10 @@
 
 #![allow(ellipsis_inclusive_range_patterns)]
 
-use std::fmt;
-use std::str::FromStr;
-use std::error::Error;
+use alloc::boxed::Box;
+use alloc::fmt;
+use alloc::string::{String, ToString};
+use core::str::FromStr;
 
 use {Datelike, Timelike, Weekday, ParseWeekdayError};
 use div::{div_floor, mod_floor};
@@ -305,13 +306,7 @@ enum ParseErrorKind {
 /// Same to `Result<T, ParseError>`.
 pub type ParseResult<T> = Result<T, ParseError>;
 
-impl fmt::Display for ParseError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        self.description().fmt(f)
-    }
-}
-
-impl Error for ParseError {
+impl ParseError {
     fn description(&self) -> &str {
         match self.0 {
             ParseErrorKind::OutOfRange => "input is out of range",
@@ -322,6 +317,19 @@ impl Error for ParseError {
             ParseErrorKind::TooLong => "trailing input",
             ParseErrorKind::BadFormat => "bad or unsupported format string",
         }
+    }
+}
+
+impl fmt::Display for ParseError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.description().fmt(f)
+    }
+}
+
+#[cfg(feature = "std")]
+impl std::error::Error for ParseError {
+    fn description(&self) -> &str {
+        ParseError::description(self)
     }
 }
 
@@ -356,7 +364,7 @@ pub fn format<'a, I>(
     static LONG_WEEKDAYS: [&'static str; 7] =
         ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-    use std::fmt::Write;
+    use core::fmt::Write;
     let mut result = String::new();
 
     for item in items {

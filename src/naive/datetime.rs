@@ -3,8 +3,9 @@
 
 //! ISO 8601 date and time without timezone.
 
-use std::{str, fmt, hash};
-use std::ops::{Add, Sub, AddAssign, SubAssign};
+use alloc::fmt;
+use core::{hash, str};
+use core::ops::{Add, Sub, AddAssign, SubAssign};
 use num_traits::ToPrimitive;
 use oldtime::Duration as OldDuration;
 
@@ -2179,7 +2180,9 @@ mod tests {
     use super::NaiveDateTime;
     use Datelike;
     use naive::{NaiveDate, MIN_DATE, MAX_DATE};
-    use std::i64;
+    use alloc::format;
+    use alloc::string::ToString;
+    use core::i64;
     use oldtime::Duration;
 
     #[test]

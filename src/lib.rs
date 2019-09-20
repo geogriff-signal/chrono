@@ -403,6 +403,15 @@
     trivially_copy_pass_by_ref,
 ))]
 
+#![cfg_attr(not(feature = "std"), no_std)]
+
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+#[cfg(feature = "std")]
+extern crate std as alloc;
+#[cfg(feature = "std")]
+extern crate core;
+
 #[cfg(feature="clock")]
 extern crate time as oldtime;
 extern crate num_integer;
@@ -678,7 +687,7 @@ impl num_traits::FromPrimitive for Weekday {
     }
 }
 
-use std::fmt;
+use alloc::fmt;
 
 /// An error resulting from reading `Weekday` value with `FromStr`.
 #[derive(Clone, PartialEq)]

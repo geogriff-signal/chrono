@@ -3,8 +3,9 @@
 
 //! ISO 8601 calendar date without timezone.
 
-use std::{str, fmt};
-use std::ops::{Add, Sub, AddAssign, SubAssign};
+use alloc::fmt;
+use core::str;
+use core::ops::{Add, Sub, AddAssign, SubAssign};
 use num_traits::ToPrimitive;
 use oldtime::Duration as OldDuration;
 
@@ -1681,7 +1682,9 @@ mod tests {
     use super::{MIN_DATE, MIN_YEAR, MIN_DAYS_FROM_YEAR_0};
     use super::{MAX_DATE, MAX_YEAR, MAX_DAYS_FROM_YEAR_0};
     use {Datelike, Weekday};
-    use std::{i32, u32};
+    use alloc::format;
+    use alloc::string::ToString;
+    use core::{i32, u32};
     use oldtime::Duration;
 
     #[test]

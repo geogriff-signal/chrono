@@ -3,8 +3,8 @@
 
 //! The time zone which has a fixed offset from UTC.
 
-use std::ops::{Add, Sub};
-use std::fmt;
+use alloc::fmt;
+use core::ops::{Add, Sub};
 use oldtime::Duration as OldDuration;
 
 use Timelike;
@@ -208,6 +208,8 @@ impl<Tz: TimeZone> Sub<FixedOffset> for DateTime<Tz> {
 mod tests {
     use offset::TimeZone;
     use super::FixedOffset;
+    use alloc::format;
+    use alloc::string::ToString;
 
     #[test]
     fn test_date_extreme_offset() {

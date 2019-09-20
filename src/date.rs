@@ -3,9 +3,10 @@
 
 //! ISO 8601 calendar date with time zone.
 
-use std::{fmt, hash};
-use std::cmp::Ordering;
-use std::ops::{Add, Sub};
+use alloc::fmt;
+use core::hash;
+use core::cmp::Ordering;
+use core::ops::{Add, Sub};
 use oldtime::Duration as OldDuration;
 
 use {Weekday, Datelike};

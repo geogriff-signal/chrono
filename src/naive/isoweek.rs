@@ -3,7 +3,7 @@
 
 //! ISO 8601 week.
 
-use std::fmt;
+use alloc::fmt;
 
 use super::internals::{DateImpl, Of, YearFlags};
 
@@ -142,6 +142,8 @@ impl fmt::Debug for IsoWeek {
 mod tests {
     use naive::{internals, MIN_DATE, MAX_DATE};
     use Datelike;
+    use alloc::format;
+    use alloc::string::ToString;
 
     #[test]
     fn test_iso_week_extremes() {

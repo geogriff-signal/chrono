@@ -359,6 +359,9 @@ impl<'a> Iterator for StrftimeItems<'a> {
 #[cfg(test)]
 #[test]
 fn test_strftime_items() {
+    use alloc::vec;
+    use alloc::vec::Vec;
+
     fn parse_and_collect<'a>(s: &'a str) -> Vec<Item<'a>> {
         // map any error into `[Item::Error]`. useful for easy testing.
         let items = StrftimeItems::new(s);
@@ -409,6 +412,7 @@ fn test_strftime_items() {
 #[test]
 fn test_strftime_docs() {
     use {FixedOffset, TimeZone, Timelike};
+    use alloc::string::ToString;
 
     let dt = FixedOffset::east(34200).ymd(2001, 7, 8).and_hms_nano(0, 34, 59, 1_026_490_708);
 

@@ -3,8 +3,9 @@
 
 //! ISO 8601 time without timezone.
 
-use std::{str, fmt, hash};
-use std::ops::{Add, Sub, AddAssign, SubAssign};
+use alloc::fmt;
+use core::{hash, str};
+use core::ops::{Add, Sub, AddAssign, SubAssign};
 use oldtime::Duration as OldDuration;
 
 use Timelike;
@@ -681,7 +682,7 @@ impl NaiveTime {
         //      `rhs.frac`|========================================>|
         //          |     |   |        `self - rhs`         |       |
 
-        use std::cmp::Ordering;
+        use core::cmp::Ordering;
 
         let secs = i64::from(self.secs) - i64::from(rhs.secs);
         let frac = i64::from(self.frac) - i64::from(rhs.frac);
@@ -1481,7 +1482,9 @@ mod serde {
 mod tests {
     use super::NaiveTime;
     use Timelike;
-    use std::u32;
+    use alloc::format;
+    use alloc::string::ToString;
+    use core::u32;
     use oldtime::Duration;
 
     #[test]

@@ -3,9 +3,12 @@
 
 //! ISO 8601 date and time with time zone.
 
-use std::{str, fmt, hash};
-use std::cmp::Ordering;
-use std::ops::{Add, Sub};
+use alloc::fmt;
+use alloc::string::{String, ToString};
+use core::{hash, str};
+use core::cmp::Ordering;
+use core::ops::{Add, Sub};
+#[cfg(feature="std")]
 use std::time::{SystemTime, UNIX_EPOCH};
 use oldtime::Duration as OldDuration;
 
@@ -647,6 +650,7 @@ impl str::FromStr for DateTime<Local> {
     }
 }
 
+#[cfg(feature="std")]
 impl From<SystemTime> for DateTime<Utc> {
     fn from(t: SystemTime) -> DateTime<Utc> {
         let (sec, nsec) = match t.duration_since(UNIX_EPOCH) {
@@ -672,9 +676,10 @@ impl From<SystemTime> for DateTime<Local> {
     }
 }
 
+#[cfg(feature="std")]
 impl<Tz: TimeZone> From<DateTime<Tz>> for SystemTime {
     fn from(dt: DateTime<Tz>) -> SystemTime {
-        use std::time::Duration;
+        use core::time::Duration;
 
         let sec = dt.timestamp();
         let nsec = dt.timestamp_subsec_nanos();
@@ -1491,6 +1496,8 @@ mod tests {
     use offset::Local;
     use offset::{TimeZone, Utc, FixedOffset};
     use oldtime::Duration;
+    use alloc::format;
+    #[cfg(feature="std")]
     use std::time::{SystemTime, UNIX_EPOCH};
 
     #[test]
@@ -1697,6 +1704,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature="std")]
     fn test_from_system_time() {
         use std::time::Duration;
 

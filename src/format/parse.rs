@@ -6,7 +6,7 @@
 
 #![allow(deprecated)]
 
-use std::usize;
+use core::usize;
 
 use Weekday;
 
@@ -721,6 +721,7 @@ fn test_rfc2822() {
 #[test]
 fn parse_rfc850() {
     use ::{Utc, TimeZone};
+    use alloc::string::ToString;
 
     static RFC850_FMT: &'static str =  "%A, %d-%b-%y %T GMT";
 

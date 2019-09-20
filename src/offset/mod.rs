@@ -18,7 +18,7 @@
 //! and provides implementations for 1 and 3.
 //! An `TimeZone` instance can be reconstructed from the corresponding `Offset` instance.
 
-use std::fmt;
+use alloc::fmt;
 
 use format::{parse, ParseResult, Parsed, StrftimeItems};
 use naive::{NaiveDate, NaiveDateTime, NaiveTime};
@@ -474,6 +474,7 @@ pub use self::utc::Utc;
 #[cfg(test)]
 mod tests {
     use super::*;
+    use alloc::string::ToString;
 
     #[test]
     fn test_negative_millis() {
